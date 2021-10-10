@@ -20,25 +20,25 @@ class Task extends Component {
     toggleForm(){
         this.setState({isEditing: !this.state.isEditing});
     }
-    handleChange(evt){
-        this.setState({
-            [evt.target.name]: evt.target.value
-        });
-    }
     handleSubmit(evt){
         evt.preventDefault();
         this.props.editTask(this.props.id, this.state.text);
         this.setState({ isEditing: false });
     }
-    handleToggle(e){
+    handleChange(evt){
+        this.setState({
+            [evt.target.name]: evt.target.value
+        });
+    }
+    handleToggle(evt){
         this.props.toggleCompletion(this.props.id);
     }
     render() {
         let result;
         if(this.state.isEditing){
             result = (
-                <div>
-                    <form onSubmit={this.handleSubmit}>
+                <div className="Task">
+                    <form className='Task-edit-form' onSubmit={this.handleSubmit}>
                         <input 
                         value = {this.state.text} 
                         name="text" 
@@ -49,13 +49,18 @@ class Task extends Component {
             )
         } else {
             result = (
-            <div>
-                <p>{this.props.text}</p>
-                <button onClick={this.toggleForm}>edit</button>
-                <button onClick={this.removeTask}> X </button>
-                <li onClick={this.handleToggle} className={this.props.completed ? "completed" : ""}>
+            <div className="Task">
+                <li className={this.props.completed ? "Task-text completed" : "Task-text"} onClik={this.handleToggle}>
                     {this.props.text}
                 </li>
+                <div className="Task-buttons">
+                    <button onClick={this.toggleForm}>
+                        <i className="fas fa-pen"></i>
+                    </button>
+                    <button onClick={this.removeTask}>
+                        <i className="fas fa-trash"></i>
+                    </button>
+                </div>
             </div>
             );
         }

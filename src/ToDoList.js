@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Task from './Task';
 import NewTask from './NewTask';
+import './ToDoList.css'
 
 class ToDoList extends Component {
     constructor(props){
@@ -31,22 +32,6 @@ class ToDoList extends Component {
             tasks: [...state.tasks, newTask]
         }));
     }
-    renderTasks(){
-        return(
-            <div>
-                {this.state.tasks.map(task => 
-                <div key={task.id}>
-                    <Task 
-                        id={task.id}
-                        text={task.text}
-                        editTask={this.editTask}
-                        removeTask={this.removeTask}
-                        completed={task.completed}
-                        toggleCompletion={this.toggleCompletion} />
-                </div>)}
-            </div>
-        )
-    }
     toggleCompletion(id){
         const updatedTasks = this.state.tasks.map(task => {if(task.id === id){
             return {...task, completed: !task.completed };
@@ -56,10 +41,27 @@ class ToDoList extends Component {
     this.setState({ tasks: updatedTasks });
     }
     render() {
+        const tasks = this.state.tasks.map(task => {
+            return (
+                <Task 
+                key={task.id}        
+                id={task.id}
+                text={task.text}
+                editTask={this.editTask}
+                removeTask={this.removeTask}
+                completed={task.completed}
+                toggleCompletion={this.toggleCompletion} />
+            );
+        });
         return (
-            <div>
+            <div className="TodoList">
+                <h1>To Do List</h1>
                 <NewTask addTask={this.addTask}/>
-                {this.renderTasks()}
+                <ul>
+                    <div className="task-list">
+                        {tasks}
+                    </div>
+                </ul>
             </div>
         )
     }
